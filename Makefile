@@ -1,43 +1,39 @@
-PNAME	:= exec
-
 Q		:= @
 CC		:= gcc
 LD		:= gcc
 RM		:= rm -rf
-MKDIR	:= mkdir -p
 
 CCFLAGS		+= -Wall
 CCFLAGS		+= -O2
-DEPFLAGS	+= -MT $@ -MD -MP -MF $(BLDDIR)$*.d
-# LDFLAGS	=
+CCFLAGS		+= -std=c99
 
-BLDDIR	:= build/
-SRCDIR	:= src/
+#=-----------------------------------------------------------------------------
 
-SRCNMS	:= $(notdir $(wildcard $(SRCDIR)*.c))
-OBJS	:= $(addprefix $(BLDDIR), $(SRCNMS:.c=.o))
-EXEC	:= $(BLDDIR)$(PNAME).x
+all: z1_procinfo.x #z2_kopiowanie.x z3_procesy.x z4_lider.x
 
-all: build
-
-build: $(EXEC)
-
-run: build
-	$(Q)./$(EXEC)
-
-$(EXEC): $(OBJS)
+z1_procinfo.x: main.o procinfo.o
 	@printf "  LD\t$?\n"
 	$(Q)$(LD) $(LDFLAGS) $? -o $@
 
-$(BLDDIR)%.o: $(SRCDIR)%.c
+z2_kopiowanie.x: kopiuj.o
+	@printf "  LD\t$?\n"
+	$(Q)$(LD) $(LDFLAGS) $? -o $@
+
+z3_procesy.x: procesy.o procinfo.o
+	@printf "  LD\t$?\n"
+	$(Q)$(LD) $(LDFLAGS) $? -o $@
+
+z4_lider.x: lider.o
+	@printf "  LD\t$?\n"
+	$(Q)$(LD) $(LDFLAGS) $? -o $@
+
+%.o: %.c
 	@printf "  CC\t$<\n"
 	$(Q)$(MKDIR) $(BLDDIR)
-	$(Q)$(CC) $(DEPFLAGS) $(CCFLAGS) -o $@ -c $<
+	$(Q)$(CC) $(CCFLAGS) -o $@ -c $<
 
 clean:
 	@printf "  CLEAN\n"
-	$(Q)$(RM) $(BLDDIR)
+	$(Q)$(RM) *.o *.x
 
-.PHONY: all build run clean
-
-include $(wildcard $(BLDDIR)*.d)
+.PHONY: all clean
