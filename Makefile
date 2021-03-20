@@ -1,21 +1,21 @@
-PNAME	:= cppclass
+PNAME	:= exec
 
 Q		:= @
-CXX		:= g++
-LD		:= g++
+CC		:= gcc
+LD		:= gcc
 RM		:= rm -rf
 MKDIR	:= mkdir -p
 
-CXXFLAGS	+= -Wall
-CXXFLAGS	+= -O2
+CCFLAGS		+= -Wall
+CCFLAGS		+= -O2
 DEPFLAGS	+= -MT $@ -MD -MP -MF $(BLDDIR)$*.d
 # LDFLAGS	=
 
 BLDDIR	:= build/
 SRCDIR	:= src/
 
-SRCNMS	:= $(notdir $(wildcard $(SRCDIR)*.cpp))
-OBJS	:= $(addprefix $(BLDDIR), $(SRCNMS:.cpp=.o))
+SRCNMS	:= $(notdir $(wildcard $(SRCDIR)*.c))
+OBJS	:= $(addprefix $(BLDDIR), $(SRCNMS:.c=.o))
 EXEC	:= $(BLDDIR)$(PNAME).x
 
 all: build
@@ -29,10 +29,10 @@ $(EXEC): $(OBJS)
 	@printf "  LD\t$?\n"
 	$(Q)$(LD) $(LDFLAGS) $? -o $@
 
-$(BLDDIR)%.o: $(SRCDIR)%.cpp
-	@printf "  CXX\t$<\n"
+$(BLDDIR)%.o: $(SRCDIR)%.c
+	@printf "  CC\t$<\n"
 	$(Q)$(MKDIR) $(BLDDIR)
-	$(Q)$(CXX) $(DEPFLAGS) $(CXXFLAGS) -o $@ -c $<
+	$(Q)$(CC) $(DEPFLAGS) $(CCFLAGS) -o $@ -c $<
 
 clean:
 	@printf "  CLEAN\n"
