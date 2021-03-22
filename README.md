@@ -1,5 +1,9 @@
 # Rozwiązania do zestawu 1.
-Grzegorz Janysek, 22 marca 2021r.
+Grzegorz Janysek, 22 marca 2021r. 
+
+- Do skompilowania wszystkich zadań na raz można użyć `$ make`.
+- Do kompilowania poszczególnych zadań należy użyć `$ make <plik_wykonywalny_zadania>`.
+- W celu usunięcia plików tymczasowych należy użyć `$ make clean`.
 
 ---
 ### Zadanie 1. Procinfo
@@ -29,8 +33,18 @@ Na podstawie powyższej listy można utworzyć *drzewo genealogiczne* procesów.
         - `PID=5358, PPID=5355, PGID=5354`
             - `PID=5361, PPID=5358, PGID=5354`
 ### Zadanie 4. lider.c
-Nazwa pliku wykonywalnego to `z4_lider.x`.
-
+Nazwa pliku wykonywalnego to `z4_lider.x`. Zmodyfikowane rozwiązanie zadania 3. Wynikiem działania jest wyświetlenie takiej samej listy jak w zadaniu 3, z tą różnicą że każdy proces znajduje się w grupie o `PGID` równemu swojemu `PID`
+```
+./z4_lider.x
+Name=./z4_lider.x, UID=501, GID=20, PID=8883, PPID=1141, PGID=8883
+Name=./z4_lider.x, UID=501, GID=20, PID=8885, PPID=8883, PGID=8885
+Name=./z4_lider.x, UID=501, GID=20, PID=8886, PPID=8883, PGID=8886
+Name=./z4_lider.x, UID=501, GID=20, PID=8884, PPID=8883, PGID=8884
+Name=./z4_lider.x, UID=501, GID=20, PID=8887, PPID=8885, PGID=8887
+Name=./z4_lider.x, UID=501, GID=20, PID=8889, PPID=8884, PGID=8889
+Name=./z4_lider.x, UID=501, GID=20, PID=8888, PPID=8884, PGID=8888
+Name=./z4_lider.x, UID=501, GID=20, PID=8893, PPID=8888, PGID=8893
+```
 ---
 ### Pytania do zestawu
 -   ##### Opisać dokładnie jak działa funkcja `fork()`?
@@ -42,6 +56,6 @@ Nazwa pliku wykonywalnego to `z4_lider.x`.
 -   ##### Jak używając funkcji `sleep` i bez odwoływania się do funkcji `wait()` zapewnić aby procesy macierzyste kończyły się dopiero po procesach potomnych.
     > Można użyć funkcji `sleep()` tylko w procesie macieżystym, i jako argument przekazać szacunkowy czas wykonywania się procesów potomnych.
 -   ##### Jaką wartość zwraca `open()`?
-    > Zwraca nieujemny `int`, który jest deskryptorem otwieranego pliku. W przypadku błędu zwraca `-1`
+    > Zwraca nieujemny `int`, który jest deskryptorem otwieranego pliku. W przypadku błędu zwraca `-1`.
 -   ##### Jaką wartość zwraca `read()` i `write()`?
-    > Zwracają ilość poprawnie przeczytanych/zapisanych bajtów. W przypadku błądu zwracają `-1`
+    > Zwracają ilość poprawnie przeczytanych/zapisanych bajtów. W przypadku błądu zwracają `-1`.

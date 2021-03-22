@@ -10,7 +10,7 @@ CCFLAGS		+= -std=c99
 
 #=-----------------------------------------------------------------------------
 
-all: z1_procinfo.x z2_kopiowanie.x z3_procesy.x #z4_lider.x
+all: z1_procinfo.x z2_kopiowanie.x z3_procesy.x z4_lider.x
 
 z1_procinfo.x: main.o procinfo.o
 	@printf "  LD\t$?\n"
@@ -24,7 +24,9 @@ z3_procesy.x: procesy.o procinfo.o
 	@printf "  LD\t$?\n"
 	$(Q)$(LD) $(LDFLAGS) -o $@ procesy.o procinfo.o
 
-# z4_lider.x: lider.o
+z4_lider.x: lider.o procinfo.o
+	@printf "  LD\t$?\n"
+	$(Q)$(LD) $(LDFLAGS) -o $@ lider.o procinfo.o
 
 %.o: %.c
 	@printf "  CC\t$<\n"
