@@ -10,16 +10,23 @@ CCFLAGS		+= -std=c99
 
 #=-----------------------------------------------------------------------------
 
-all: drzewko1.x drzewko2.x
+all: drzewko1.x drzewko2.x macierzysty.x potomny.x
 
-drzewko1.x: procinfo.o drzewko1.o
+drzewko1.x: drzewko1.o procinfo.o
 	@printf "  LD\t$?\n"
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^
 
-drzewko2.x: procinfo.o drzewko2.o
+drzewko2.x: drzewko2.o procinfo.o
 	@printf "  LD\t$?\n"
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^
 
+macierzysty.x: macierzysty.o procinfo.o
+	@printf "  LD\t$?\n"
+	$(Q)$(LD) $(LDFLAGS) -o $@ $^
+
+potomny.x: potomny.o procinfo.o
+	@printf "  LD\t$?\n"
+	$(Q)$(LD) $(LDFLAGS) -o $@ $^
 
 %.o: %.c
 	@printf "  CC\t$<\n"
