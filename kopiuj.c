@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
             perror("err");
             exit(1);
         }
-    } while (bytes_red == BUFFER_SIZE);
+    } while (bytes_red);
 
     close(src);
     close(dst);
