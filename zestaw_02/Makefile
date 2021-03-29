@@ -10,7 +10,7 @@ CCFLAGS		+= -std=c99
 
 #=-----------------------------------------------------------------------------
 
-all: drzewko1.x drzewko2.x macierzysty.x potomny.x
+all: drzewko1.x drzewko2.x macierzysty.x potomny.x zombie.x orphan.x execute.x
 
 drzewko1.x: drzewko1.o procinfo.o
 	@printf "  LD\t$?\n"
@@ -27,6 +27,19 @@ macierzysty.x: macierzysty.o procinfo.o
 potomny.x: potomny.o procinfo.o
 	@printf "  LD\t$?\n"
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^
+
+zombie.x: zombie.o
+	@printf "  LD\t$?\n"
+	$(Q)$(LD) $(LDFLAGS) -o $@ $^
+
+orphan.x: orphan.o
+	@printf "  LD\t$?\n"
+	$(Q)$(LD) $(LDFLAGS) -o $@ $^
+
+execute.x: execute.o
+	@printf "  LD\t$?\n"
+	$(Q)$(LD) $(LDFLAGS) -o $@ $^
+
 
 %.o: %.c
 	@printf "  CC\t$<\n"
