@@ -1,5 +1,5 @@
-# Rozwiązania do zestawu 1.
-Grzegorz Janysek, 22 marca 2021r. 
+# Rozwiązania do zestawu 2.
+Grzegorz Janysek, 29 marca 2021r. 
 
 ---
 ### Pytania do zestawu
