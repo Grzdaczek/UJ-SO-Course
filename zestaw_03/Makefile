@@ -5,7 +5,7 @@ RM		:= rm -rf
 
 CCFLAGS		+= -Wall
 CCFLAGS		+= -O2
-CCFLAGS		+= -std=c99
+CCFLAGS		+= -std=gnu99
 # LDFLAGS		+= -v
 
 #=-----------------------------------------------------------------------------

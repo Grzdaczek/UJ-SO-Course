@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 
     int pid = fork();
 
-    execl("obsluga.x", "obsluga.x", "p", "18");
+    execl("obsluga.x", "obsluga.x", "p", "18", NULL);
 
     sleep(1);
     printf("pid: %d\n", pid);
