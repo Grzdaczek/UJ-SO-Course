@@ -1,7 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-// #include <sys/types.h>
-// #include <unistd.h>
 #include <signal.h>
 #include <errno.h>
 #include "procinfo.h"
@@ -21,8 +19,6 @@ int main(int argc, char* argv[])
     int sig = atoi(argv[2]);
 
     procinfo(name);
-
-    // printf("name: %s, cmd: %c, sig: %d\n", name, cmd, sig);
 
     switch(cmd) {
         case 'd':
