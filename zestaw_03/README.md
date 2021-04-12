@@ -1,7 +1,31 @@
 # Rozwiązania do zestawu 3.
-Grzegorz Janysek, 12 kwietnia 2021r. 
+Grzegorz Janysek, 12 kwietnia 2021r.
+
+### Opis użycia i działania programów
+-   ##### obsluga.c
+    lorem ipsum
+-   ##### wysylaj.c
+    lorem ipsum
+-   ##### grupa.c
+    lorem ipsum
+
+### Funkcje i znaczenie wybraych sygnałów
+-   ##### SIGALRM
+    Jest wysyłany gdy upłynie czas `t` po wywołaniu `alarm(t)`. Odbiorcą sygnału jest proces który wywołał `alarm()`. Standardowo powoduje zakończenie proeceu.
+-   ##### SIGUSR1, SIGUSR2
+    Sygnały których funkcja zdefiniowana jest przez urzytkownika, Standardowo odebranie powoduje zakończenie procesu.
+-   ##### SIGINT
+    Przerwanie z klawiatury, za pomocą skróru `Ctrl + C`, Standardowo zakańcza proces.
+-   ##### SIGKILL
+    Sygnał powoduje bezwarunkowe zakończenie procesu, nie może zostać zignorowany.
+
+### Sygnały możliwe do wysłąnia w terminalu przy użyciu skrótów klawiszowych
+-   `Ctrl + C` : SIGINIT
+-   `Ctrl + \` : SIGQUIT
+-   `Ctrl + Z` : SIGTSTP
 
 ---
+
 ### Pytania do zestawu
 -   ##### Do czego służą sygnały?
     Do komunikacji międzyprocesowej. Umożliwaiją asynchroniczne przerwanie procesu.
@@ -17,8 +41,8 @@ Grzegorz Janysek, 12 kwietnia 2021r.
 -   ##### Opisać sygnał `SIGCHLD`.
     Sygnał `SIGCHLD` jest wysyłany do rodzica po tym jak proces dziecko zostanie zatrzymany lub się zakończy.
 -   ##### Które sygnały możemy wysłać w terminalu przy użyciu skrótów klawiszowych?
-    - <kbd>Ctrl</kbd>+<kbd>C</kbd>: SIGINIT
-    - <kbd>Ctrl</kbd>+<kbd>\</kbd>: SIGQUIT
-    - <kbd>Ctrl</kbd>+<kbd>Z</kbd>: SIGTSTP
+    - `Ctrl + C` : SIGINIT
+    - `Ctrl + \` : SIGQUIT
+    - `Ctrl + Z` : SIGTSTP
 -   ##### Jak działa funkcja `pause()`?
     Funkcja powoduje uśpienie procesu do momentu otrzymania sygnału.
