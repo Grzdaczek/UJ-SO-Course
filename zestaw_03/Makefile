@@ -10,13 +10,17 @@ CCFLAGS		+= -std=gnu99
 
 #=-----------------------------------------------------------------------------
 
-all: obsluga.x wysylaj.x
+all: obsluga.x wysylaj.x grupa.x
 
 obsluga.x: obsluga.o procinfo.o
 	@printf "  LD\t$?\n"
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^
 
 wysylaj.x: wysylaj.o
+	@printf "  LD\t$?\n"
+	$(Q)$(LD) $(LDFLAGS) -o $@ $^
+
+grupa.x: grupa.o
 	@printf "  LD\t$?\n"
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^
 
