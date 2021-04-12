@@ -3,11 +3,15 @@ Grzegorz Janysek, 12 kwietnia 2021r.
 
 ### Opis użycia i działania programów
 -   ##### obsluga.c
-    lorem ipsum
+    Program przyjmuje dwa argumenty, rodzaj obsługi sygnału, oraz numer sygnału: `./obsluga.x {d|i|p} <sig>`.
+    - `d` - domyślna obsługa sygnału
+    - `i` - ignorowanie sygnału
+    - `p` - przechwycenie i wypisanie sygnału
+    Program ustawia obsługę sygnału `sig`, a następnie czeaka na sygnał.
 -   ##### wysylaj.c
-    lorem ipsum
+    Program uruchamia `obsluga.x` w procesie potomnym, a następnie wysyła sygnał `sig` do tego procesu. Przyjmuje dwa argumenty rodzaj obsugi i numer sygnału: `./wysylaj.x {d|i|p} <sig>`. Do procesu potomnego przekazywane są argumenty procesu rodzica.
 -   ##### grupa.c
-    lorem ipsum
+    Proces *główny* tworzy proces *lidera*, który 5 razy w procesach potomnych uruchamia `obsluga.x` oraz staje się liderem własnej grupy. Następnie proces *główny* wysyła sygnał do grupy procesu *lider* i na niego czeka. Proces *lider* ignoruje ten sygnał, natomiast jego procesy potmne wypisują sygnał i zakańczają się. *Lider* czeka na swoje dzieci a następnie również się kończy. Program nie przyjuje żadnych argumentów. 
 
 ### Funkcje i znaczenie wybraych sygnałów
 -   ##### SIGALRM
@@ -36,7 +40,9 @@ Grzegorz Janysek, 12 kwietnia 2021r.
 -   ##### Jak sprawdzić czy istnieje proces `pid` lub grupa `pgid` i czy możemy do nich wysyłać sygnały?
     Przy użyciu `kill(pid, 0)` lub `kill(pgid, 0)`.
 -   #### Jaki sens ma wywołanie `kill(0, 0)`?
+    Sprawdza możliwość wysłania sygnału do procesów w tej samej grupie co nadawca.
 -   ##### Jak i dlaczego należy uodpornić proces macierzysty w programie grupa.c na sygnał?
+    Ponieważ sygnał zosanie wysłany do każdego procesu z grupy procesu macieżystego, zostanie wysłany kakże do niego. Należy go uodpornić za pomocą `signal(sig, SIG_IGN)`.
 -   ##### Jak wznowić proces zatrzymany sygnałem `SIGSTOP`?
 -   ##### Opisać sygnał `SIGCHLD`.
     Sygnał `SIGCHLD` jest wysyłany do rodzica po tym jak proces dziecko zostanie zatrzymany lub się zakończy.
