@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 	}
 
 	pause();
-	return 0;
+	exit(EXIT_SUCCESS);
 }
 
 void signal_handler(int sig)

@@ -20,7 +20,7 @@ wysylaj.x: wysylaj.o
 	@printf "  LD\t$?\n"
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^
 
-grupa.x: grupa.o
+grupa.x: grupa.o procinfo.o
 	@printf "  LD\t$?\n"
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^
 
