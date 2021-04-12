@@ -8,39 +8,39 @@ void signal_handler(int sig);
 
 int main(int argc, char* argv[]) 
 {
-    if(argc != 3) {
-        errno = EINVAL;
-        perror("Invalid argument count");
-        exit(EXIT_FAILURE);
-    }
+	if(argc != 3) {
+		errno = EINVAL;
+		perror("Invalid argument count");
+		exit(EXIT_FAILURE);
+	}
 
-    char* name = argv[0];
-    char cmd = *argv[1];
-    int sig = atoi(argv[2]);
+	char* name = argv[0];
+	char cmd = *argv[1];
+	int sig = atoi(argv[2]);
 
-    procinfo(name);
+	procinfo(name);
 
-    switch(cmd) {
-        case 'd':
-            signal(sig, SIG_DFL);
-            break;
-        case 'i':
-            signal(sig, SIG_IGN);
-            break;
-        case 'p':
-            signal(sig, signal_handler);
-            break;
-        default:
-            errno = EINVAL;
-            perror("First argument should be {d|i|p}");
-            exit(EXIT_FAILURE);
-    }
+	switch(cmd) {
+		case 'd':
+			signal(sig, SIG_DFL);
+			break;
+		case 'i':
+			signal(sig, SIG_IGN);
+			break;
+		case 'p':
+			signal(sig, signal_handler);
+			break;
+		default:
+			errno = EINVAL;
+			perror("First argument should be {d|i|p}");
+			exit(EXIT_FAILURE);
+	}
 
-    pause();
-    return 0;
+	pause();
+	return 0;
 }
 
 void signal_handler(int sig)
 {
-    printf("Signal Recived: %d\n", sig);
+	printf("Signal Recived: %d\n", sig);
 }
