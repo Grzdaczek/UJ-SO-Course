@@ -4,11 +4,15 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <wait.h>
+#include <ctype.h>
+#include <string.h>
 
-#define CHUNK_SIZE 8
+#define CHUNK_SIZE_TX 37
+#define CHUNK_SIZE_RX 23
 
-void prod_process(int pipe_fd[2], int src_fd);
-void kons_process(int pipe_fd[2], int dst_fd);
+int prod_process(int pipe_fd[2], int src_fd);
+int kons_process(int pipe_fd[2], int dst_fd);
+void print_chunk(const char* msg, char* chunk, int chunk_size);
 
 int main(int argc, char* argv[])
 {
@@ -18,74 +22,82 @@ int main(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 	}
 
-    int src_fd = open(argv[1], O_RDONLY);
-    int dst_fd = open(argv[2], O_WRONLY);
-    if (src_fd == -1 || dst_fd == -1) {
-        perror("File could not be opened");
-        exit(EXIT_FAILURE);
-    }
+	int src_fd = open(argv[1], O_RDONLY);
+	int dst_fd = open(argv[2], O_WRONLY);
+	if (src_fd == -1 || dst_fd == -1) {
+		perror("File could not be opened");
+		exit(EXIT_FAILURE);
+	}
 
-    int pipe_fd[2];
-    if(pipe(pipe_fd)) {
-        perror("Pipe could not be created");
-        exit(EXIT_FAILURE);
-    }
+	int pipe_fd[2];
+	if(pipe(pipe_fd)) {
+		perror("Pipe could not be created");
+		exit(EXIT_FAILURE);
+	}
 
-    switch(fork()) {
-        case -1:
-            perror("Fork error");
-            exit(EXIT_FAILURE);
-        case 0:
-            prod_process(pipe_fd, src_fd);
-        default:
-            kons_process(pipe_fd, dst_fd);
-    }
+	switch(fork()) {
+		case -1:
+			perror("Fork error");
+			exit(EXIT_FAILURE);
+		case 0:
+			prod_process(pipe_fd, src_fd);
+		default:
+			kons_process(pipe_fd, dst_fd);
+	}
 
 	/* Should never execute */
 	exit(EXIT_FAILURE);
 }
 
-/*
-    do {
-        bytes_red = read(src, buffer, BUFFER_SIZE);
-        bytes_written = write(dst, buffer, bytes_red);
+/*=-------------------------------------------------------------------------=*/
 
-        if (bytes_red != bytes_written || bytes_red == -1 || bytes_written == -1) {
-            perror("err");
-            exit(1);
-        }
-    } while (bytes_red);
-*/
-
-void prod_process(int pipe_fd[2], int src_fd)
+int prod_process(int pipe_fd[2], int src_fd)
 {
-    int* rx_fd = &pipe_fd[0];
-    int* tx_fd = &pipe_fd[1];
+	close(pipe_fd[0]);
+	ssize_t bytes_red = 0;
+	ssize_t bytes_written = 0;
+	char chunk[CHUNK_SIZE_TX];
 
-    close(*rx_fd);
+	do {
+		usleep(10000 * (random()%30));
+		bytes_red = read(src_fd, chunk, CHUNK_SIZE_TX);
+		bytes_written = write(pipe_fd[1], chunk, bytes_red);
+		print_chunk("sent", chunk, bytes_written);
+		if(bytes_written == -1 || bytes_red == -1) perror("File error");
+	} while(bytes_red > 0);
 
-    /* transmit data through pipe */
-
-    close(*tx_fd);
-    close(src_fd);
-    wait(NULL);
-    exit(EXIT_SUCCESS);
+	close(pipe_fd[1]);
+	close(src_fd);
+	wait(NULL);
+	exit(EXIT_SUCCESS);
 }
 
-void kons_process(int pipe_fd[2], int dst_fd)
+int kons_process(int pipe_fd[2], int dst_fd)
 {
-    int* rx_fd = &pipe_fd[0];
-    int* tx_fd = &pipe_fd[1];
+	close(pipe_fd[1]);
+	ssize_t bytes_red = 0;
+	ssize_t bytes_written = 0;
+	char chunk[CHUNK_SIZE_RX];
 
-    close(*tx_fd);
+	do {
+		usleep(10000 * (random()%20));
+		bytes_red = read(pipe_fd[0], chunk, CHUNK_SIZE_RX);
+		bytes_written = write(dst_fd, chunk, bytes_red);
+		print_chunk("recived", chunk, bytes_written);
+		if(bytes_written == -1 || bytes_red == -1) perror("File error");
+	} while(bytes_red > 0);
 
-    char buffer[1024];
-    write(STDIN_FILENO, "lel\n", 4);
-
-
-    /* recive data through pipe */
-
-    close(*rx_fd);
-    close(dst_fd);
-    exit(EXIT_SUCCESS);
+	close(pipe_fd[0]);
+	close(dst_fd);
+	exit(EXIT_SUCCESS);
 }
+
+void print_chunk(const char* msg, char* chunk, int chunk_size) {
+	char buffer[1024];
+	sprintf(buffer, "%s\t  %dB\t ", msg, chunk_size);
+	for(int i=0; i<chunk_size; i++) 
+		sprintf(buffer+strlen(buffer), "%c", isalpha(chunk[i]) ? chunk[i]: '.');
+	sprintf(buffer+strlen(buffer), "\n");
+	if(write(STDOUT_FILENO, buffer, strlen(buffer)) == -1) perror("Print error");
+}
+

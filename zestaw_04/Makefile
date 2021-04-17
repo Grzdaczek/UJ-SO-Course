@@ -6,6 +6,7 @@ RM		:= rm -rf
 CCFLAGS		+= -Wall
 CCFLAGS		+= -O2
 CCFLAGS		+= -std=gnu99
+CCFLAGS		+= -pedantic
 # LDFLAGS		+= -v
 
 #=-----------------------------------------------------------------------------
@@ -22,7 +23,6 @@ prodkons.x: prodkons.o
 
 clean:
 	@printf "  CLEAN\n"
-	$(Q)$(RM) *.o *.x schowek.txt
-	$(Q)touch schowek.txt
+	$(Q)$(RM) *.o *.x
 
 .PHONY: all clean
