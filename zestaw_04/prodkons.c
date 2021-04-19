@@ -6,9 +6,10 @@
 #include <wait.h>
 #include <ctype.h>
 #include <string.h>
+#include <time.h>
 
-#define CHUNK_SIZE_TX 37
-#define CHUNK_SIZE_RX 23
+#define CHUNK_SIZE_TX 32
+#define CHUNK_SIZE_RX 24
 
 int prod_process(int pipe_fd[2], int src_fd);
 int kons_process(int pipe_fd[2], int dst_fd);
@@ -28,6 +29,8 @@ int main(int argc, char* argv[])
 		perror("File could not be opened");
 		exit(EXIT_FAILURE);
 	}
+
+	srand(time(NULL));
 
 	int pipe_fd[2];
 	if(pipe(pipe_fd)) {
