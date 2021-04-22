@@ -4,6 +4,7 @@
 *.x
 *.o
 *.d
+*.a
 *.swap
 *.tmp
 *.log
