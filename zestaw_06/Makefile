@@ -6,15 +6,23 @@ RM		:= rm -rf
 
 CCFLAGS		+= -Wall
 CCFLAGS		+= -O2
-CCFLAGS		+= -std=c99
+CCFLAGS		+= -std=gnu99
 CCFLAGS		+= -pedantic
 CCFLAGS		+= -pthread
 LDFLAGS		+= -pthread
 #=-----------------------------------------------------------------------------
 
-all: semuse.x
+all: semuse.x prog.x powielacz.x
 
 semuse.x: semuse.o libsem.a
+	@printf "  LD\t$^\n"
+	$(Q)$(LD) $(LDFLAGS) -o $@ $^
+
+prog.x: prog.o libsem.a
+	@printf "  LD\t$^\n"
+	$(Q)$(LD) $(LDFLAGS) -o $@ $^
+
+powielacz.x: powielacz.o libsem.a
 	@printf "  LD\t$^\n"
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^
 
