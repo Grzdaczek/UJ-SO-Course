@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 			break;
 		case 'q': ;
 			sem = semOpen(SEM_NAME);
-			semV(sem);
+			semInfo(sem);
 			semClose(sem);
 			break;
 		default:
