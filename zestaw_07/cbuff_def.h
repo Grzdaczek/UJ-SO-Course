@@ -6,7 +6,6 @@
 typedef int data_t;
 
 typedef struct {
-	char eof;					// 0 dla aktywnego bufora
 	int head;					// Pierwszy element do odczytu
 	int tail;					// Element za ostatnim zapisanym elementem
 	data_t data[CBUFF_SIZE];	// Dane

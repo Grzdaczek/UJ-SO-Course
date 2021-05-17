@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
 		usleep(10000 * (random()%30));
 	}
 
-	cbuff_ptr->eof = 1; 
+	cbuff_wr(0);
 
 	semClose(RD);
 	semClose(WR);

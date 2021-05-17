@@ -26,8 +26,9 @@ int main(int argc, char* argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-	while(cbuff_ptr->eof == 0) {
+	while(1) {
 		data_t x = cbuff_rd();
+		if(!x) break;
 		fprintf(fp, "%d\n", x);
 		usleep(10000 * (random()%25));
 	}
