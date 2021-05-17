@@ -8,7 +8,7 @@ int shmCreate(const char* name, int size);
 int shmOpen(const char* name);
 // Funkcja otwiera obiekt pamięci dzielonej i zwraca jego deskryptor.
 
-void shmRm(const char* name);
+void shmRemove(const char* name);
 // Usuwa obiekt pamięci dzielonej o nazwie name.
 
 void* shmMap(int fd, int size);

@@ -30,7 +30,7 @@ int shmOpen(const char* name) {
 	return fd;
 }
 
-void shmRm(const char* name) {
+void shmRemove(const char* name) {
 	int result = shm_unlink(name);
 	if(result == -1) perror("libshmem: error");
 }

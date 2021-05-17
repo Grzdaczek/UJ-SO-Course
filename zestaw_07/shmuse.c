@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 
 		case 'd': ;
 			// Usuwa segment pamięci dzielonej.
-			shmRm(SHMEM_NAME);
+			shmRemove(SHMEM_NAME);
 			break;
 
 		case 'r': ;
