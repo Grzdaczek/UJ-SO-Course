@@ -5,6 +5,10 @@
 
 #include "msg.h"
 
+typedef struct {
+	char data[256];
+} msg_t;
+
 int main(int argc, char* argv[]) {
 
 	if(argc != 3) {
@@ -29,14 +33,18 @@ int main(int argc, char* argv[]) {
 
 		case 'r': ;
 			mqd = msgOpen(name);
-			msgRecv(mqd, &m);
-			printf("%c\n", m);
+			msgRecv(mqd, &m, sizeof(msg_t));
+			printf("%s\n", (char*)&m);
 			break;
 
 		case 'w': ;
-			scanf("%c", &m);
+			int result = read(STDIN_FILENO, &m, sizeof(m));
+			if(result ==  -1) {
+				perror("Couldn't read");
+				exit(EXIT_FAILURE);
+			}
 			mqd = msgOpen(name);
-			msgSend(mqd, &m);
+			msgSend(mqd, &m, sizeof(msg_t));
 			break;
 
 		case 'i': ;

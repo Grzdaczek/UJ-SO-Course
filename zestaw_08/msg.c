@@ -22,18 +22,30 @@ void msgRemove(const char *name) {
 	if(result == -1) perror("msglib: remove error");
 }
 
-void msgSend(mqd_t mqd, msg_t *msg) {
-	int result = mq_send(mqd, (char*)msg, sizeof(msg_t), 0);
+void msgSend(mqd_t mqd, void* msg, int msg_size) {
+	if(MSG_MAXSIZE < msg_size) {
+		perror("msglib: send error: message size too large.");
+		return;
+	}
+
+	int result = mq_send(mqd, msg, msg_size, 0);
 	if(result == -1) perror("msglib: send error");
 }
 
-void msgRecv(mqd_t mqd, msg_t *msg) {
-	struct mq_attr attr;
-	mq_getattr(mqd, &attr);
-	char buff[attr.mq_msgsize];
-	int result = mq_receive(mqd, buff, sizeof(buff), NULL);
-	memcpy(msg, buff, sizeof(msg_t));
-	if(result == -1) perror("msglib: reciv error");
+void msgRecv(mqd_t mqd, void* msg, int msg_size) {
+	char buff[MSG_MAXSIZE];
+	if(MSG_MAXSIZE < msg_size) {
+		perror("msglib: reciv error: message size too large.");
+		return;
+	}
+
+	int result = mq_receive(mqd, buff, MSG_MAXSIZE, NULL);
+	if(result == -1) {
+		perror("msglib: reciv error");
+		return;
+	}
+
+	memcpy(msg, buff, msg_size);
 }
 
 void msgInfo(mqd_t mqd) {
