@@ -16,7 +16,12 @@ LDLIBS		+= -lmsg
 LDLIBS		+= -lrt
 #=-----------------------------------------------------------------------------
 
-all: libmsg.so msguse.x # serwer.x kilent.x
+XTSERVER	= export LD_LIBRARY_PATH=. && ./serwer.x
+XTKLIENT1	= export LD_LIBRARY_PATH=. && sleep 0.1 && ./klient.x
+XTKLIENT2	= export LD_LIBRARY_PATH=. && sleep 0.2 && ./klient.x
+#=-----------------------------------------------------------------------------
+
+all: libmsg.so msguse.x serwer.x klient.x
 
 msguse.x: msguse.o
 	@printf "  LD\t$^\n"
@@ -37,7 +42,12 @@ libmsg.so: msg.c
 
 %.o: %.c
 	@printf "  CC\t$<\n"
-	$(Q)$(CC) $(CCFLAGS) -c $< -o $@  
+	$(Q)$(CC) $(CCFLAGS) -c $< -o $@ 
+
+test:
+	xterm -title SERWER -bg red -e "$(XTSERVER)" &\
+	xterm -title KLIENT_1 -bg blue -e "$(XTKLIENT1)" &\
+	xterm -title KLIENT_2 -bg blue -e "$(XTKLIENT2)" &\
 
 clean:
 	@printf "  CLEAN\n"
