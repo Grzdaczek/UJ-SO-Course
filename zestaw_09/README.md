@@ -18,5 +18,5 @@ Grzegorz Janysek, 26 maja 2021r.
 	Wskazauje to linkerowi na konieczność stosowania wersji _thread safe_ funkcji bibliotecznych.
 -   ##### Co oznacza typ `void * (*) ()`?
     Wskaźnik na funkcje która zwraca `void *`.
--   #####Co to sa operacje atomowe? Czy są konieczne?
+-   ##### Co to sa operacje atomowe? Czy są konieczne?
 	To operacje które nie są podzielne. Są koniecne gdy chcemy mieć pewność że operacja zawsze zostanie wykonana poprawnie, nie zależnie od innych operacji wykonywanych jednocześnie w innch wątkach.
