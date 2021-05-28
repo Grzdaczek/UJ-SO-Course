@@ -6,6 +6,9 @@
 
 #define THREAD_NUMBER 10
 
+// for output formatting purposes only
+pthread_mutex_t stdout_mutex = PTHREAD_MUTEX_INITIALIZER;
+
 volatile int counter = 0;
 volatile unsigned int ticket_last = 1;
 volatile unsigned int tickets[THREAD_NUMBER];
@@ -15,6 +18,8 @@ void* task(int* id);
 int main(int argc, char* argv[]) {
 	
 	pthread_t td[THREAD_NUMBER];
+	printf("\033c");
+	fflush(stdout);
 
 	for(int i=0; i<THREAD_NUMBER; i++) tickets[i] = 0;
 
@@ -30,12 +35,20 @@ int main(int argc, char* argv[]) {
 		if(result == -1) perror("error: pthread_join");
 	}
 
-	printf("expected: %d==%d, %s\n", THREAD_NUMBER, counter,
+	printf("\033[%d;1H", THREAD_NUMBER+1);
+	printf("expected: %d, got: %d, %s\n", THREAD_NUMBER, counter,
 		   THREAD_NUMBER==counter ? "SUCCESS" : "FAILURE");
-	exit(THREAD_NUMBER==counter ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 
 //-----------------------------------------------------------------------------
+
+inline void printat(char* message, int x, int y, int mod) {
+	pthread_mutex_lock(&stdout_mutex);
+	printf("\033[%d;%dH\033[%dm", y, x, mod);
+	printf("%s", message);
+	fflush(stdout);
+	pthread_mutex_unlock(&stdout_mutex);
+}
 
 void lock(int id) {
 	tickets[id] = ticket_last++;
@@ -51,25 +64,27 @@ void unlock(int id) {
 }
 
 void* task(int* id) {
+	char buff[64];
+
+	sprintf(buff, "%d: waiting", *id);
+	printat(buff, 1, (*id)+1, 33);
 
 	// begin critical section
 	lock(*id);
-	printf("%d: entering critical section\n", *id);
 	int c = counter;
 	c++;
 
-	printf("%d: working", *id);
-	for(int i=0; i<20; i++) {
-		usleep(50000);
-		printf(".");
-		fflush(stdout);
-	}
-	printf("\n");
+	sprintf(buff, "%d:              critical (%d/%d)", *id, c, THREAD_NUMBER);
+	printat(buff, 1, (*id+1), 31);
 	
+	sleep(1);
+
 	counter = c;
-	printf("%d: leaving critical section\n\n", *id);
 	unlock(*id);
 	// end critical section
+
+	sprintf(buff, "%d: done                         ", *id);
+	printat(buff, 1, (*id)+1, 34);
 
 	free(id);
 	return NULL;
