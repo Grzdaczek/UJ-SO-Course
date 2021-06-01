@@ -52,7 +52,6 @@ void constructor() {
 	cbuff_t* cbuff_ptr = shmMap(fd, sizeof(cbuff_t));
 	cbuff_ptr->head = 0;
 	cbuff_ptr->tail = 0;
-	cbuff_ptr->eof = 0;
 }
 
 void destructor() {
