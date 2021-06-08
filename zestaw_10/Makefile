@@ -13,9 +13,13 @@ LDLIBS		+= -lpthread
 LDLIBS		+= -lrt
 #=-----------------------------------------------------------------------------
 
-all: piekarnia.x
+all: piekarnia1.x piekarnia2.x
 
-piekarnia.x: piekarnia.o
+piekarnia1.x: piekarnia1.o
+	@printf "  LD\t$^\n"
+	$(Q)$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+piekarnia2.x: piekarnia2.o
 	@printf "  LD\t$^\n"
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
