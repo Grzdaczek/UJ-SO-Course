@@ -1,2 +1,2 @@
-# UJ-SO-Course
-Rozwiązania do zestawów zadań kursu *Systemy operacyjne*
+# Systemy operacyjne
+Rozwiązania do zestawów zadań kursu
